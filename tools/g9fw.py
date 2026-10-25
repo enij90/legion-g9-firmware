@@ -2,16 +2,16 @@
 """Legion G9 firmware tool: fetch the official firmware, make a recovery zip, build patched images.
 
 The official Lenovo firmware is never stored in this repository: `fetch` downloads it from the same
-update server the Legion app uses and checks its hash; `build` applies a patch (only our own bytes)
-on top of it.
+update server the Legion app uses and checks its hash; `build` applies one or more patches (only our
+own bytes) on top of it.
 
   python3 g9fw.py fetch                                  # -> legion-g9_firmware_0.48.zip (official)
   python3 g9fw.py recovery legion-g9_firmware_0.48.zip   # -> legion-g9_firmware_0.49.zip (stock, renamed)
-  python3 g9fw.py build legion-g9_firmware_0.48.zip ../patches/perled/edits.txt 0.69
+  python3 g9fw.py build legion-g9_firmware_0.48.zip 0.73 ../patches/perled/edits.txt ../patches/paddles/edits.txt
   python3 g9fw.py decrypt legion-g9_firmware_0.48.zip ota_plain.bin
 
 The Legion app flashes any zip named legion-g9_firmware_<version>.zip with an ota.bin inside, from
-the phone's Download/legion folder ("other firmware"). The controller always reports 0.48, so any
+the phone's Download/legion folder ("Local file"). The controller always reports 0.48, so any
 version above 0.48 is accepted, including the stock image renamed to 0.49 (recovery).
 """
 import argparse
@@ -133,7 +133,12 @@ def cmd_recovery(args):
 
 def cmd_build(args):
     ota = read_stock(args.stock)
-    patched, changed, blocks = apply_edits(ota, read_edits(args.edits))
+    edits = [edit for path in args.edits for edit in read_edits(path)]
+    spans = sorted((offset, offset + len(data)) for offset, data in edits)
+    for (_, end), (start, _) in zip(spans, spans[1:]):
+        if start < end:
+            sys.exit(f"the patches overlap at file offset 0x{start:x}")
+    patched, changed, blocks = apply_edits(ota, edits)
     out = args.out or f"legion-g9_firmware_{args.version}.zip"
     write_zip(out, patched)
     print(f"wrote {out}: {changed} bytes changed in {blocks} blocks, ota.bin sha256 {sha256(patched)}")
@@ -155,10 +160,10 @@ def main():
     p.add_argument("stock")
     p.add_argument("--out")
     p.set_defaults(func=cmd_recovery)
-    p = sub.add_parser("build", help="apply an edits file to the official image")
+    p = sub.add_parser("build", help="apply one or more edits files to the official image")
     p.add_argument("stock")
-    p.add_argument("edits")
-    p.add_argument("version", help="version in the zip name, above 0.48 (e.g. 0.69)")
+    p.add_argument("version", help="version in the zip name, above 0.48 (e.g. 0.73)")
+    p.add_argument("edits", nargs="+", help="edits files, e.g. ../patches/perled/edits.txt")
     p.add_argument("--out")
     p.set_defaults(func=cmd_build)
     p = sub.add_parser("decrypt", help="write the decrypted image (for disassembly)")

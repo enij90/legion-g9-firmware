@@ -1,10 +1,16 @@
 # Legion G9 firmware patches
 
 Patches for the firmware of the **Lenovo Legion G9** controller (2025), the one that docks to the
-Legion Tab Gen 3 (Legion Y700 2025). The first one, **per-LED lighting**, lets each of the 10 LEDs on the grips be set on its own,
-with its own color and brightness, instead of one color per side. I use it with
-[Colores](https://github.com/Hooandee/decky-colores) for an ambilight where every LED follows its own
-piece of the screen edge, on my [Armada port for the Legion Tab Gen 3](https://github.com/enij90/armada-tb321fu).
+Legion Tab Gen 3 (Legion Y700 2025):
+
+- **Per-LED lighting**: each of the 10 LEDs on the grips can be set on its own, with its own color and
+  brightness, instead of one color per side. I use it with
+  [Colores](https://github.com/Hooandee/decky-colores) for an ambilight where every LED follows its own
+  piece of the screen edge.
+- **Independent back paddles**: three of the four paddles become buttons of their own (L4, R4 and L5 on
+  a Steam Deck layout) instead of copies of other buttons.
+
+I run it on my [Armada port for the Legion Tab Gen 3](https://github.com/enij90/armada-tb321fu).
 
 **Experimental**: so far tested only on my own controller. Read [Recovery](docs/recovery.md) before
 flashing.
@@ -23,12 +29,17 @@ Needs Python 3 (standard library only).
 ```sh
 cd tools
 python3 g9fw.py fetch                                   # official legion-g9_firmware_0.48.zip, hash checked
-python3 g9fw.py build legion-g9_firmware_0.48.zip ../patches/perled/edits.txt 0.69
+python3 g9fw.py build legion-g9_firmware_0.48.zip 0.73 ../patches/perled/edits.txt ../patches/paddles/edits.txt
 python3 g9fw.py recovery legion-g9_firmware_0.48.zip    # stock image as legion-g9_firmware_0.49.zip
 ```
 
-`build` writes `legion-g9_firmware_0.69.zip`. Its `ota.bin` must have sha256
-`d0acd4d869bb500a8f2a8a75797694a203172d7aa04841df21baeccac2f94a75`: that is the exact image I tested.
+`build` writes `legion-g9_firmware_0.73.zip` with both patches. The images I tested, by sha256 of their
+`ota.bin`:
+
+| patches | version | `ota.bin` sha256 |
+|---|---|---|
+| per-LED + paddles | 0.73 | `6539229cd284f2983de49d94cc30a7cecf41cef8213381e251343ffa0723d32a` |
+| per-LED only | 0.69 | `d0acd4d869bb500a8f2a8a75797694a203172d7aa04841df21baeccac2f94a75` |
 
 ## Flash
 
@@ -59,11 +70,20 @@ patched firmware: the stock one paints the whole strip with these commands.
 Everything else (effects, single colors, the Legion app) works as with the stock firmware. To drive the
 LEDs from your own program, the protocol is in [docs/perled.md](docs/perled.md).
 
+## Using the paddles
+
+Leave the paddles **unmapped** in the Legion app. The left top, right top and left bottom paddles then
+send buttons of their own (`BTN_Z`, `BTN_C` and HID button 16); the right bottom one keeps the stock
+behaviour and can still be mapped in the app. On Linux the third one needs a small udev rule and an
+InputPlumber map entry to show up as L5: both are in [docs/paddles.md](docs/paddles.md), and in my
+Armada port they are part of the image.
+
 ## How it was made
 
-The patch is written in pi32v2 assembly ([patches/perled/perled.s](patches/perled/perled.s)) and
-assembled with the Jieli toolchain. The assembled bytes are committed in `edits.txt`, so building the
-firmware does not need the toolchain; `tools/assemble.sh` regenerates them.
+The patches are written in pi32v2 assembly ([patches/perled/perled.s](patches/perled/perled.s),
+[patches/paddles/paddles.s](patches/paddles/paddles.s)) and assembled with the Jieli toolchain. The
+assembled bytes are committed in each `edits.txt`, so building the firmware does not need the toolchain;
+`tools/assemble.sh <name>` regenerates them.
 
 Along the way I found that half of the firmware image is encrypted with a shifted key, which every
 earlier tool decrypted wrong: see [docs/sfc-key.md](docs/sfc-key.md). `tools/g9fw.py decrypt` writes

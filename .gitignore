@@ -1,0 +1,4 @@
+# Firmware images are never committed: the official one is downloaded, patched ones are built.
+*.zip
+*.bin
+__pycache__/

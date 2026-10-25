@@ -30,7 +30,7 @@ evdev:input:b0003v3537p1134*
 
 and the InputPlumber capability map of the G9 maps `BTN_TRIGGER_HAPPY1` to `LeftPaddle2`. `BTN_C` and
 `BTN_Z` were already mapped to `RightPaddle1` and `LeftPaddle1`, so L4 and R4 work on the current
-Armada image; the L5 rule and map entry come with the next update of my Armada port.
+Armada image; the L5 rule and map entry come with the next update of my Armada port (OTA).
 
 ### Until the next Armada update
 
@@ -62,6 +62,24 @@ Then add this entry under `mapping:` in `/etc/inputplumber/capability_maps.d/zz-
 ```
 
 Remove both files once the update is installed.
+
+### Other distributions with InputPlumber
+
+The firmware side is the same on any system; what turns the new buttons into L4, R4 and L5 is the G9
+profile for InputPlumber, which ships with my Armada port. On another distribution that uses
+InputPlumber, take the two files from Armada and adapt the device profile:
+
+- copy [`05-lenovo-legion-g9.yaml`](https://github.com/enij90/armada-tb321fu/blob/main/system_files/usr/share/inputplumber/devices/05-lenovo-legion-g9.yaml)
+  to `/etc/inputplumber/devices.d/` and
+  [`lenovo_legion_g9.yaml`](https://github.com/enij90/armada-tb321fu/blob/main/system_files/usr/share/inputplumber/capability_maps/lenovo_legion_g9.yaml)
+  to `/etc/inputplumber/capability_maps.d/`;
+- in the device profile, change the devicetree `model` under `matches` to yours
+  (`cat /sys/firmware/devicetree/base/model`), remove the `TB321FU IMU` source (Armada's IMU bridge),
+  and fix or remove the two `aw86937-haptics` sources if your kernel names the vibration motors
+  differently;
+- add the hwdb rule and the L5 map entry shown above.
+
+I have not tested this outside Armada.
 
 ## How it works
 

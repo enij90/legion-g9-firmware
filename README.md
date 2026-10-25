@@ -77,9 +77,11 @@ send buttons of their own (`BTN_Z`, `BTN_C` and HID button 16); the right bottom
 behaviour and can still be mapped in the app. On Linux the third one needs a small udev rule and an
 InputPlumber map entry to show up as L5: both are in [docs/paddles.md](docs/paddles.md).
 
-**Note:** in my Armada port L4 and R4 already work; L5 comes with the next image update. Until then,
+**Note:** in my Armada port L4 and R4 already work; L5 comes with the next Armada update (OTA). Until then,
 the L5 paddle does nothing unless you add the two files by hand as shown in
-[docs/paddles.md](docs/paddles.md#until-the-next-armada-update).
+[docs/paddles.md](docs/paddles.md#until-the-next-armada-update). Other distributions using InputPlumber
+need the G9 profile from Armada, adapted as described in
+[docs/paddles.md](docs/paddles.md#other-distributions-with-inputplumber).
 
 ## How it was made
 

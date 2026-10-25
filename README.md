@@ -7,8 +7,9 @@ Legion Tab Gen 3 (Legion Y700 2025):
   brightness, instead of one color per side. I use it with
   [Colores](https://github.com/Hooandee/decky-colores) for an ambilight where every LED follows its own
   piece of the screen edge.
-- **Independent back paddles**: three of the four paddles become buttons of their own (L4, R4 and L5 on
-  a Steam Deck layout) instead of copies of other buttons.
+- **Independent back paddles and M button**: the four paddles become buttons of their own (L4, R4, L5
+  and R5 on a Steam Deck layout) instead of copies of other buttons, and the M button opens the Quick
+  Access menu.
 
 I run it on my [Armada port for the Legion Tab Gen 3](https://github.com/enij90/armada-tb321fu).
 
@@ -29,16 +30,16 @@ Needs Python 3 (standard library only).
 ```sh
 cd tools
 python3 g9fw.py fetch                                   # official legion-g9_firmware_0.48.zip, hash checked
-python3 g9fw.py build legion-g9_firmware_0.48.zip 0.73 ../patches/perled/edits.txt ../patches/paddles/edits.txt
+python3 g9fw.py build legion-g9_firmware_0.48.zip 0.74 ../patches/perled/edits.txt ../patches/paddles/edits.txt
 python3 g9fw.py recovery legion-g9_firmware_0.48.zip    # stock image as legion-g9_firmware_0.49.zip
 ```
 
-`build` writes `legion-g9_firmware_0.73.zip` with both patches. The images I tested, by sha256 of their
+`build` writes `legion-g9_firmware_0.74.zip` with both patches. The images I tested, by sha256 of their
 `ota.bin`:
 
 | patches | version | `ota.bin` sha256 |
 |---|---|---|
-| per-LED + paddles | 0.73 | `6539229cd284f2983de49d94cc30a7cecf41cef8213381e251343ffa0723d32a` |
+| per-LED + paddles and M | 0.74 | `eae7b77f90ec4738fed115eb278d0d9dd1597a450b72eaa46bdfbd9ec6261097` |
 | per-LED only | 0.69 | `d0acd4d869bb500a8f2a8a75797694a203172d7aa04841df21baeccac2f94a75` |
 
 ## Flash
@@ -70,15 +71,15 @@ patched firmware: the stock one paints the whole strip with these commands.
 Everything else (effects, single colors, the Legion app) works as with the stock firmware. To drive the
 LEDs from your own program, the protocol is in [docs/perled.md](docs/perled.md).
 
-## Using the paddles
+## Using the paddles and M
 
-Leave the paddles **unmapped** in the Legion app. The left top, right top and left bottom paddles then
-send buttons of their own (`BTN_Z`, `BTN_C` and HID button 16); the right bottom one keeps the stock
-behaviour and can still be mapped in the app. On Linux the third one needs a small udev rule and an
-InputPlumber map entry to show up as L5: both are in [docs/paddles.md](docs/paddles.md).
+Leave the paddles **unmapped** in the Legion app. The four paddles and M then send buttons of their own
+(`BTN_Z`, `BTN_C` and `BTN_TRIGGER_HAPPY1`–`3`); for the last three the patch turns 4 unused padding
+bits of the report into new HID buttons. On Linux they need InputPlumber map entries to show up as L5,
+R5 and the Quick Access button: see [docs/paddles.md](docs/paddles.md).
 
-**Note:** in my Armada port L4 and R4 already work; L5 comes with the next Armada update (OTA). Until then,
-the L5 paddle does nothing unless you add the two files by hand as shown in
+**Note:** in my Armada port L4 and R4 already work; L5, R5 and M come with the next Armada update (OTA).
+Until then they do nothing unless you add the map entries by hand as shown in
 [docs/paddles.md](docs/paddles.md#until-the-next-armada-update). Other distributions using InputPlumber
 need the G9 profile from Armada, adapted as described in
 [docs/paddles.md](docs/paddles.md#other-distributions-with-inputplumber).

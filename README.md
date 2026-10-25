@@ -47,10 +47,13 @@ the stock recovery zip named 0.49.
 
 ## Using per-LED
 
-With Colores: per-LED needs my Colores branch
-[`g9-perled`](https://github.com/enij90/decky-colores/tree/g9-perled), which samples 5 points per side
-of the screen and drives each LED. It is off by default: create an empty file named `g9-perled` in the
-plugin settings folder (`~/homebrew/settings/Colores/`) and restart Decky. Do not enable it without the
+With Colores: per-LED needs my build of Colores, which samples 5 points per side of the screen and
+drives each LED. Download `Colores.zip` from the
+[release on my fork](https://github.com/enij90/decky-colores/releases/latest) and install it in Decky
+(developer mode, install from file); the source is the
+[`g9-perled`](https://github.com/enij90/decky-colores/tree/g9-perled) branch. Per-LED is off by default:
+create an empty file named `g9-perled` in the plugin settings folder (`~/homebrew/settings/Colores/`)
+and restart Decky. Do not enable it without the
 patched firmware: the stock one paints the whole strip with these commands.
 
 Everything else (effects, single colors, the Legion app) works as with the stock firmware. To drive the

@@ -29,8 +29,39 @@ evdev:input:b0003v3537p1134*
 ```
 
 and the InputPlumber capability map of the G9 maps `BTN_TRIGGER_HAPPY1` to `LeftPaddle2`. `BTN_C` and
-`BTN_Z` were already mapped to `RightPaddle1` and `LeftPaddle1`. In my Armada port both are part of
-the image.
+`BTN_Z` were already mapped to `RightPaddle1` and `LeftPaddle1`, so L4 and R4 work on the current
+Armada image; the L5 rule and map entry come with the next update of my Armada port.
+
+### Until the next Armada update
+
+On the tablet, as root:
+
+```sh
+cat > /etc/udev/hwdb.d/71-legion-g9-paddles.hwdb <<'EOF'
+evdev:input:b0003v3537p1134*
+ KEYBOARD_KEY_90010=btn_trigger_happy1
+EOF
+systemd-hwdb update
+cp /usr/share/inputplumber/capability_maps/lenovo_legion_g9.yaml \
+   /etc/inputplumber/capability_maps.d/zz-lenovo_legion_g9.yaml
+```
+
+Then add this entry under `mapping:` in `/etc/inputplumber/capability_maps.d/zz-lenovo_legion_g9.yaml`
+(same `id`, loaded after the stock file, so it replaces it) and unplug and replug the G9:
+
+```yaml
+  - name: Left Paddle 2
+    source_events:
+      - evdev:
+          event_type: KEY
+          event_code: BTN_TRIGGER_HAPPY1
+          value_type: button
+    target_event:
+      gamepad:
+        button: LeftPaddle2
+```
+
+Remove both files once the update is installed.
 
 ## How it works
 

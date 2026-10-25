@@ -75,8 +75,11 @@ LEDs from your own program, the protocol is in [docs/perled.md](docs/perled.md).
 Leave the paddles **unmapped** in the Legion app. The left top, right top and left bottom paddles then
 send buttons of their own (`BTN_Z`, `BTN_C` and HID button 16); the right bottom one keeps the stock
 behaviour and can still be mapped in the app. On Linux the third one needs a small udev rule and an
-InputPlumber map entry to show up as L5: both are in [docs/paddles.md](docs/paddles.md), and in my
-Armada port they are part of the image.
+InputPlumber map entry to show up as L5: both are in [docs/paddles.md](docs/paddles.md).
+
+**Note:** in my Armada port L4 and R4 already work; L5 comes with the next image update. Until then,
+the L5 paddle does nothing unless you add the two files by hand as shown in
+[docs/paddles.md](docs/paddles.md#until-the-next-armada-update).
 
 ## How it was made
 

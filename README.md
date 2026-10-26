@@ -12,6 +12,10 @@ one or with both:
   and R5 on a Steam Deck layout) instead of copies of other buttons, and the M button opens the Quick
   Access menu.
 
+Per-LED lighting with Colores, each grip LED following its own piece of the screen edge:
+
+https://github.com/user-attachments/assets/490ddd0e-5a0a-4dd6-ab39-dcf86cef98fa
+
 I run them on my [Armada port for the Legion Tab Gen 3](https://github.com/enij90/armada-tb321fu).
 
 **Experimental**: so far tested only on my own controller. Read [Recovery](docs/recovery.md) before
@@ -99,10 +103,6 @@ you can flash 0.50 again over 0.50, or switch to 0.51 and back, and the stock re
 always goes in.
 
 ## Using per-LED
-
-With Colores, each grip LED follows its own piece of the screen edge:
-
-https://github.com/user-attachments/assets/490ddd0e-5a0a-4dd6-ab39-dcf86cef98fa
 
 Per-LED needs my build of Colores, which samples 5 points per side of the screen and drives each LED:
 

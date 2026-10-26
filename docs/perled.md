@@ -22,8 +22,9 @@ With the patch, a **solid** command on strip **0** whose **speed** byte is `0xE0
 - `B = 0` is ignored by the firmware (the LED keeps its color): send `B = 1` for a dark LED. From 0.75
   `B = 1` turns the LED off; earlier versions show a faint white.
 - Channels, top-down: left grip `7 8 9 10 11`, right grip `4 3 2 1 0`. `5` and `6` are the two
-  halves of the Legion button: from 0.80 they follow channel `3` (4th from the bottom of the right
-  grip, next to the button). Up to 0.75 the button was off while per-LED was active.
+  halves of the Legion button: from the 0.80 test build (now zip 0.50) they follow channel `3` (4th
+  from the bottom of the right grip, next to the button). Up to 0.75 the button was off while per-LED
+  was active.
 - One command per LED. The controller handles about 100 commands a second without dropping off USB.
 - Any normal command (speed `0x80`, an effect, off) on strip 0 or 1 leaves per-LED mode.
 

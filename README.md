@@ -26,14 +26,16 @@ update server the Legion app uses, checks its hash, and applies only my patch by
 
 ## Which image
 
-| you want | patches to build with | last image I tested |
-|---|---|---|
-| per-LED lighting and the paddles | `perled` + `paddles` | 0.80 |
-| only the paddles and M | `paddles` | 0.79 |
-| only per-LED lighting | `perled` | 0.69 (an older per-LED patch) |
+| you want | patches | zip version | tested |
+|---|---|---|---|
+| per-LED lighting and the paddles | `perled` + `paddles` | 0.50 | yes |
+| only the paddles and M | `paddles` | 0.51 | yes |
+| only per-LED lighting | `perled` | 0.52 | not in this form (an older per-LED-only image was) |
+| the stock firmware back | none | 0.49 | yes |
 
 The patches do not depend on each other. Lighting you do not patch stays stock, and so do the
-buttons.
+buttons. Each image keeps its number when the patches are updated: the sha256 in the table below
+tells the builds apart.
 
 ## Build
 
@@ -50,16 +52,16 @@ Needs Python 3 (standard library only).
 
    ```sh
    # per-LED lighting + paddles and M
-   python3 g9fw.py build legion-g9_firmware_0.48.zip 0.80 ../patches/perled/edits.txt ../patches/paddles/edits.txt
+   python3 g9fw.py build legion-g9_firmware_0.48.zip 0.50 ../patches/perled/edits.txt ../patches/paddles/edits.txt
    # paddles and M only
-   python3 g9fw.py build legion-g9_firmware_0.48.zip 0.79 ../patches/paddles/edits.txt
+   python3 g9fw.py build legion-g9_firmware_0.48.zip 0.51 ../patches/paddles/edits.txt
    # per-LED lighting only
-   python3 g9fw.py build legion-g9_firmware_0.48.zip 0.81 ../patches/perled/edits.txt
+   python3 g9fw.py build legion-g9_firmware_0.48.zip 0.52 ../patches/perled/edits.txt
    ```
 
    Each command writes `legion-g9_firmware_<version>.zip`. The version is only a number for the
-   Legion app: any version above 0.48 works (see [Flash](#flash)). Give each image you keep its own
-   number, and do not rename the zip, since the app reads the version from the file name.
+   Legion app (see [Flash](#flash)), and it must be a plain number: the app does not accept letters
+   in it. Do not rename the zip, since the app reads the version from the file name.
 
 To go back to the stock firmware:
 
@@ -67,15 +69,20 @@ To go back to the stock firmware:
 python3 g9fw.py recovery legion-g9_firmware_0.48.zip    # stock image as legion-g9_firmware_0.49.zip
 ```
 
-The images I tested, newest first. With the versions used above, your build gives the same `ota.bin`:
+The images I tested, newest first. The version only changes the zip name, so `ota.bin` is the same
+whatever number you build it with:
 
-| patches | version | `ota.bin` sha256 |
-|---|---|---|
-| per-LED (Legion button follows the right grip) + paddles and M | 0.80 | `9c8e280f1de747de77e03496d4a18f4ce9a48a58931ac8ae7b7a8e0d7d21bff4` |
-| paddles and M only | 0.79 | `4f0a5345d75a050248e76d2fe92921c8ddb8e552f0014ad102be0e46c01e4b74` |
-| per-LED (off on black) + paddles and M | 0.75 | `10ca54870a83c2b8ba403e664c803b5403ee370c89adf0f8027611ecb797b5cd` |
-| per-LED + paddles and M | 0.74 | `eae7b77f90ec4738fed115eb278d0d9dd1597a450b72eaa46bdfbd9ec6261097` |
-| per-LED only (older patch) | 0.69 | `d0acd4d869bb500a8f2a8a75797694a203172d7aa04841df21baeccac2f94a75` |
+| patches | `ota.bin` sha256 |
+|---|---|
+| per-LED (Legion button follows the right grip) + paddles and M | `9c8e280f1de747de77e03496d4a18f4ce9a48a58931ac8ae7b7a8e0d7d21bff4` |
+| paddles and M only | `4f0a5345d75a050248e76d2fe92921c8ddb8e552f0014ad102be0e46c01e4b74` |
+| per-LED (off on black) + paddles and M | `10ca54870a83c2b8ba403e664c803b5403ee370c89adf0f8027611ecb797b5cd` |
+| per-LED + paddles and M | `eae7b77f90ec4738fed115eb278d0d9dd1597a450b72eaa46bdfbd9ec6261097` |
+| per-LED only (older patch) | `d0acd4d869bb500a8f2a8a75797694a203172d7aa04841df21baeccac2f94a75` |
+
+Until the per-LED Legion button update, the zip numbers counted my test builds (0.69 to 0.80;
+[docs/perled.md](docs/perled.md) still names some of them). Since then each image has the fixed
+number above.
 
 ## Flash
 
@@ -89,8 +96,9 @@ currently offers 2.0.31.
    pick the zip.
 
 The app takes the version from the file name and only flashes a version above the one the controller
-reports. The controller reports 0.48 with the patches too, so any number above 0.48 works, and so does
-the stock recovery zip named 0.49.
+reports. The controller reports 0.48 with the patches too, so the fixed numbers above keep working:
+you can flash 0.50 again over 0.50, or switch to 0.51 and back, and the stock recovery zip named 0.49
+always goes in.
 
 ## Using per-LED
 

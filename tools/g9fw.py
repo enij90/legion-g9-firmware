@@ -7,7 +7,7 @@ own bytes) on top of it.
 
   python3 g9fw.py fetch                                  # -> legion-g9_firmware_0.48.zip (official)
   python3 g9fw.py recovery legion-g9_firmware_0.48.zip   # -> legion-g9_firmware_0.49.zip (stock, renamed)
-  python3 g9fw.py build legion-g9_firmware_0.48.zip 0.73 ../patches/perled/edits.txt ../patches/paddles/edits.txt
+  python3 g9fw.py build legion-g9_firmware_0.48.zip 0.50 ../patches/perled/edits.txt ../patches/paddles/edits.txt
   python3 g9fw.py decrypt legion-g9_firmware_0.48.zip ota_plain.bin
 
 The Legion app flashes any zip named legion-g9_firmware_<version>.zip with an ota.bin inside, from
@@ -162,7 +162,7 @@ def main():
     p.set_defaults(func=cmd_recovery)
     p = sub.add_parser("build", help="apply one or more edits files to the official image")
     p.add_argument("stock")
-    p.add_argument("version", help="version in the zip name, above 0.48 (e.g. 0.73)")
+    p.add_argument("version", help="version in the zip name, above 0.48 (e.g. 0.50)")
     p.add_argument("edits", nargs="+", help="edits files, e.g. ../patches/perled/edits.txt")
     p.add_argument("--out")
     p.set_defaults(func=cmd_build)
@@ -176,7 +176,7 @@ def main():
             if float(args.version) <= float(STOCK_VERSION):
                 sys.exit("version must be above 0.48, or the Legion app will not flash it")
         except ValueError:
-            sys.exit("version must look like 0.69")
+            sys.exit("version must be a plain number like 0.50 (the Legion app does not accept letters)")
     args.func(args)
 
 

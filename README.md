@@ -130,10 +130,8 @@ R5 and the Quick Access button: see [docs/paddles.md](docs/paddles.md).
 **M does not register every press yet**: it is also the controller's own key for remapping, and maybe
 for other combinations, so now and then a press does not open the Quick Access menu.
 
-**Note:** in my Armada port L4 and R4 already work; L5, R5 and M come with the next Armada update (OTA).
-Until then they do nothing unless you add the map entries by hand as shown in
-[docs/paddles.md](docs/paddles.md#until-the-next-armada-update). Other distributions using InputPlumber
-need the G9 profile from Armada, adapted as described in
+My Armada port maps all five. Other distributions using InputPlumber need the G9 profile from
+Armada, adapted as described in
 [docs/paddles.md](docs/paddles.md#other-distributions-with-inputplumber).
 
 ## How it was made

@@ -43,21 +43,8 @@ interface (the second HID interface), which the patch does not touch.
 
 ## Linux side
 
-`BTN_C` and `BTN_Z` were already mapped to `RightPaddle1` and `LeftPaddle1` by the InputPlumber
-capability map of the G9, so L4 and R4 work on the current Armada image. L5, R5 and M need three map
-entries, which come with the next update of my Armada port (OTA).
-
-### Until the next Armada update
-
-On the tablet, as root:
-
-```sh
-cp /usr/share/inputplumber/capability_maps/lenovo_legion_g9.yaml \
-   /etc/inputplumber/capability_maps.d/zz-lenovo_legion_g9.yaml
-```
-
-Then add these entries under `mapping:` in `/etc/inputplumber/capability_maps.d/zz-lenovo_legion_g9.yaml`
-(same `id`, loaded after the stock file, so it replaces it) and unplug and replug the G9:
+The InputPlumber capability map of the G9 in my Armada port maps all five: `BTN_Z` and `BTN_C` to
+`LeftPaddle1` and `RightPaddle1`, and the three new buttons with these entries:
 
 ```yaml
   - name: Left Paddle 2
@@ -89,7 +76,8 @@ Then add these entries under `mapping:` in `/etc/inputplumber/capability_maps.d/
         button: QuickAccess
 ```
 
-Remove the file once the update is installed.
+If you added them by hand in `/etc/inputplumber/capability_maps.d/zz-lenovo_legion_g9.yaml` before
+the Armada update, remove that file.
 
 ### Other distributions with InputPlumber
 
@@ -104,8 +92,7 @@ distribution that uses InputPlumber, take the two files from Armada and adapt th
 - in the device profile, change the devicetree `model` under `matches` to yours
   (`cat /sys/firmware/devicetree/base/model`), remove the `TB321FU IMU` source (Armada's IMU bridge),
   and fix or remove the two `aw86937-haptics` sources if your kernel names the vibration motors
-  differently;
-- add the three map entries shown above.
+  differently.
 
 I have not tested this outside Armada.
 

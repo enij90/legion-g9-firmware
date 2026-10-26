@@ -102,6 +102,10 @@ always goes in.
 
 ## Using per-LED
 
+With Colores, each grip LED follows its own piece of the screen edge:
+
+https://github.com/user-attachments/assets/490ddd0e-5a0a-4dd6-ab39-dcf86cef98fa
+
 Per-LED needs my build of Colores, which samples 5 points per side of the screen and drives each LED:
 
 1. Download `Colores.zip` from the

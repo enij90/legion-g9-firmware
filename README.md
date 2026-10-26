@@ -129,6 +129,9 @@ Leave the paddles **unmapped** in the Legion app. The four paddles and M then se
 bits of the report into new HID buttons. On Linux they need InputPlumber map entries to show up as L5,
 R5 and the Quick Access button: see [docs/paddles.md](docs/paddles.md).
 
+**M does not register every press yet**: it is also the controller's own key for remapping, and maybe
+for other combinations, so now and then a press does not open the Quick Access menu.
+
 **Note:** in my Armada port L4 and R4 already work; L5, R5 and M come with the next Armada update (OTA).
 Until then they do nothing unless you add the map entries by hand as shown in
 [docs/paddles.md](docs/paddles.md#until-the-next-armada-update). Other distributions using InputPlumber

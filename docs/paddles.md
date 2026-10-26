@@ -18,6 +18,10 @@ Leave the paddles **unmapped** in the Legion app: a mapped paddle also sends the
 to. M still works for the controller's own remapping (M + paddle + button), but while you do that the
 system sees M pressed too.
 
+**M does not register every press yet.** It is also the controller's own key for remapping (and maybe
+for other combinations), and the firmware still handles that, so now and then a press of M does not
+open the Quick Access menu. Press it again.
+
 This is for the controller's HID mode (report ID 1, 10 bytes), the one it uses with Linux and PCs.
 
 ## Report descriptor

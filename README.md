@@ -82,10 +82,6 @@ whatever number you build it with:
 | per-LED + paddles and M | `eae7b77f90ec4738fed115eb278d0d9dd1597a450b72eaa46bdfbd9ec6261097` |
 | per-LED only (older patch) | `d0acd4d869bb500a8f2a8a75797694a203172d7aa04841df21baeccac2f94a75` |
 
-Until the per-LED Legion button update, the zip numbers counted my test builds (0.69 to 0.80;
-[docs/perled.md](docs/perled.md) still names some of them). Since then each image has the fixed
-number above.
-
 ## Flash
 
 You need the official Legion controller app for Android (package `com.legion.xtouch`). It is not on the

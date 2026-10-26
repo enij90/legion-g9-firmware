@@ -33,9 +33,11 @@ update server the Legion app uses, checks its hash, and applies only my patch by
 | only per-LED lighting | `perled` | 0.52 | not in this form (an older per-LED-only image was) |
 | the stock firmware back | none | 0.49 | yes |
 
-The patches do not depend on each other. Lighting you do not patch stays stock, and so do the
-buttons. Each image keeps its number when the patches are updated: the sha256 in the table below
-tells the builds apart.
+You can build either patch on its own: with only the paddles patch the lights work as with the stock
+firmware, and with only the per-LED patch the buttons do.
+
+When I update a patch, its image keeps the same version number (0.50, 0.51 or 0.52). To tell one
+build from another, compare the sha256 of its `ota.bin` with the table in [Build](#build).
 
 ## Build
 

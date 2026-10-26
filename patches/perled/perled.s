@@ -1,7 +1,7 @@
 /* Legion G9 per-LED lighting, over the official 0.48 firmware. Addresses are in the decrypted image. */
 /* Store = spare bytes +5..+7 (R,G,B) and +9 (brightness) of each channel state (0x7128 + ch*0x1c). */
 /* Handler (strip 0 colour branch): packet speed b[r13+9] in 0xE0..0xEB -> stash[speed-0xE0] = colour, */
-/* brightness; then skip the stock whole-strip repaint and go to the reply. */
+/* brightness (ch 3 also to ch 5 and 6, the Legion button); then skip the stock whole-strip repaint and go to the reply. */
 /* Render (steady), static mode + stored speed in range: per ch 0-11 anim mode [0x7128+ch*0x1c]=0, SETCH(ch, stash). */
 /* Render (dirty): skip the whole-strip repaint blocks in per-LED mode. See docs/perled.md. */
 	.set HOOK_RET,    0x1e21b94
@@ -64,6 +64,19 @@ hk:	r4 = r5 + 1372
 	if (r3 >= 3) goto hb
 	r3 = 0
 hb:	b[r2+9] = r3
+/* ch 3 (4th from the bottom of the right grip, next to the Legion button) also goes to the button, */
+/* ch 5 (+2 * 0x1C) and ch 6 (+3 * 0x1C) */
+	if (r1 != 227) goto SKIP_END
+	b[r2+65] = r3
+	b[r2+93] = r3
+	r3 = r0 >> 16
+	b[r2+61] = r3
+	b[r2+89] = r3
+	r3 = r0 >> 8
+	b[r2+62] = r3
+	b[r2+90] = r3
+	b[r2+63] = r0
+	b[r2+91] = r0
 /* per-LED: skip the stock painter 0x1e1cbec, FUN_01e1afc6 x2 and 0x1e1f4ee; go to the branch end (ack epilogue) */
 	goto SKIP_END
 c2:	r0 = 1388

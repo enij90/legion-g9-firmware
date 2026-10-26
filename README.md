@@ -30,15 +30,16 @@ Needs Python 3 (standard library only).
 ```sh
 cd tools
 python3 g9fw.py fetch                                   # official legion-g9_firmware_0.48.zip, hash checked
-python3 g9fw.py build legion-g9_firmware_0.48.zip 0.74 ../patches/perled/edits.txt ../patches/paddles/edits.txt
+python3 g9fw.py build legion-g9_firmware_0.48.zip 0.75 ../patches/perled/edits.txt ../patches/paddles/edits.txt
 python3 g9fw.py recovery legion-g9_firmware_0.48.zip    # stock image as legion-g9_firmware_0.49.zip
 ```
 
-`build` writes `legion-g9_firmware_0.74.zip` with both patches. The images I tested, by sha256 of their
+`build` writes `legion-g9_firmware_0.75.zip` with both patches. The images I tested, by sha256 of their
 `ota.bin`:
 
 | patches | version | `ota.bin` sha256 |
 |---|---|---|
+| per-LED (off on black) + paddles and M | 0.75 | `10ca54870a83c2b8ba403e664c803b5403ee370c89adf0f8027611ecb797b5cd` |
 | per-LED + paddles and M | 0.74 | `eae7b77f90ec4738fed115eb278d0d9dd1597a450b72eaa46bdfbd9ec6261097` |
 | per-LED only | 0.69 | `d0acd4d869bb500a8f2a8a75797694a203172d7aa04841df21baeccac2f94a75` |
 

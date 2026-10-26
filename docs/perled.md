@@ -19,7 +19,8 @@ With the patch, a **solid** command on strip **0** whose **speed** byte is `0xE0
 ```
 
 - `H`/`S` as usual, `B` is the brightness of that LED alone.
-- `B = 0` is ignored by the firmware (the LED keeps its color): send `B = 1` for a dark LED.
+- `B = 0` is ignored by the firmware (the LED keeps its color): send `B = 1` for a dark LED. From 0.75
+  `B = 1` turns the LED off; earlier versions show a faint white.
 - Channels, top-down: left grip `7 8 9 10 11`, right grip `4 3 2 1 0`. `5` and `6` (Legion button and
   status LED) are off while per-LED is active.
 - One command per LED. The controller handles about 100 commands a second without dropping off USB.

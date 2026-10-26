@@ -48,9 +48,9 @@ hk:	r4 = r5 + 1372
 	r1 = b[r13+9](u)
 	if (r1 < 224) goto HOOK_RET
 	if (r1 > 235) goto HOOK_RET
-	r1 = uextra(r1, p:0, l:4)
+/* r1 = 0xE0 + ch, so r1 * 0x1C + (CHBASE - 0xE0 * 0x1C) = CHBASE + ch * 0x1C */
 	r2 = r1 * 0x1C
-	r3 = CHBASE
+	r3 = CHBASE - 0xE0 * 0x1C
 	r2 = r2 + r3
 	r3 = r0 >> 16
 	b[r2+5] = r3
@@ -60,7 +60,10 @@ hk:	r4 = r5 + 1372
 	r3 = b[r13+7](u)
 	r3 = r3 * 0x5
 	r3 = r3 >> 1
-	b[r2+9] = r3
+/* B = 1 (B = 0 is not accepted, so this is the lowest) turns the LED off instead of a faint white */
+	if (r3 >= 3) goto hb
+	r3 = 0
+hb:	b[r2+9] = r3
 /* per-LED: skip the stock painter 0x1e1cbec, FUN_01e1afc6 x2 and 0x1e1f4ee; go to the branch end (ack epilogue) */
 	goto SKIP_END
 c2:	r0 = 1388
@@ -70,10 +73,8 @@ c2:	r0 = 1388
 	r0 = b[r4+r0](u)
 	if (r0 < 224) goto STEADY_R0
 	r5 = 0
-lp:	r4 = r5 * 0x1C
-	r1 = CHBASE
-	r4 = r4 + r1
-	r2 = 0
+	r4 = CHBASE
+lp:	r2 = 0
 	[r4+0] = r2
 	r1 = b[r4+9](u)
 	b[r4+8] = r1
@@ -84,6 +85,7 @@ lp:	r4 = r5 * 0x1C
 	r1 <= insert(r3, p:16, l:8)
 	r0 = r5
 	call SETCH
+	r4 += 0x1C
 	r5 += 1
 	if (r5 != 12) goto lp
 	goto STEADY_END
